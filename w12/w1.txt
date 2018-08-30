@@ -1,0 +1,41 @@
+
+
+-----| testFunctions |-----------------------
+# pass
+
+-----| testModules |-----------------------
+# pass
+
+-----| testStrings |-----------------------
+# pass
+
+-----| testLists |-----------------------
+# pass
+
+-----| testException |-----------------------
+# pass
+
+-----| testArithmetic |-----------------------
+# pass
+
+-----| testWhitespace |-----------------------
+# pass
+
+-----| testingFailure |-----------------------
+# this one must fail.. just to
+# test if the  unit test system is working
+Traceback (most recent call last):
+  File "C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py", line 17, in k
+    f()
+  File "C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py", line 80, in testingFailure
+    assert 1==2
+AssertionError
+
+
+-----| testingSuccess |-----------------------
+# if this one fails, we have a problem!
+# pass
+
+# pass= 8 fail= 1 %pass = 89%
+
+Process finished with exit code 0
