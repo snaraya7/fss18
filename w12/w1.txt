@@ -1,6 +1,42 @@
+C:\Users\ncshr\AppData\Local\Programs\Python\Python36\python.exe C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py
 
+-----| testTuples |-----------------------
+# pass
+
+-----| testDict |-----------------------
+# pass
+
+-----| testSet |-----------------------
+# pass
+
+-----| testCount |-----------------------
+# pass
 
 -----| testFunctions |-----------------------
+# pass
+
+-----| testControlFlow |-----------------------
+# pass
+
+-----| testTruthiness |-----------------------
+# pass
+
+-----| testRandom |-----------------------
+# pass
+
+-----| testGenerator |-----------------------
+# pass
+
+-----| testIte |-----------------------
+# pass
+
+-----| testRegex |-----------------------
+# pass
+
+-----| testListCompr |-----------------------
+# pass
+
+-----| testSorting |-----------------------
 # pass
 
 -----| testModules |-----------------------
@@ -25,9 +61,9 @@
 # this one must fail.. just to
 # test if the  unit test system is working
 Traceback (most recent call last):
-  File "C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py", line 17, in k
+  File "C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py", line 19, in k
     f()
-  File "C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py", line 80, in testingFailure
+  File "C:/Users/ncshr/PycharmProjects/fss18/w12/w1.py", line 187, in testingFailure
     assert 1==2
 AssertionError
 
@@ -36,6 +72,6 @@ AssertionError
 # if this one fails, we have a problem!
 # pass
 
-# pass= 8 fail= 1 %pass = 89%
+# pass= 20 fail= 1 %pass = 95%
 
 Process finished with exit code 0
