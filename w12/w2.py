@@ -1,3 +1,5 @@
+import re,traceback
+
 def lines(s):
   rows = []
 
@@ -152,13 +154,35 @@ DATA2 = """
       overcast,81,75,FALSE,yes # unique day
       rainy,71,91,TRUE,no """
 
-def main():
-    result = cols(rows(lines(DATA2)))
-    for r in result:
-        print(r)
-    # var = " asdasd  ?asdasd"
-    # if '?' in var:
-    #     print(True)
-    # else:
-    #     print(False)
-main()
+class O:
+  y=n=0
+  @staticmethod
+  def report():
+    print("\n# pass= %s fail= %s %%pass = %s%%"  % (
+          O.y,O.n, int(round(O.y*100/(O.y+O.n+0.001)))))
+  @staticmethod
+  def k(f):
+    try:
+      print("\n-----| %s |-----------------------" % f.__name__)
+      if f.__doc__:
+        print("# "+ re.sub(r'\n[ \t]*',"\n# ",f.__doc__))
+      f()
+      print("# pass")
+      O.y += 1
+    except:
+      O.n += 1
+      print(traceback.format_exc())
+    return f
+
+def double(x):
+    return x * 2
+
+def ok0(s):
+  for row in prep(cols(rows(lines(s)))):
+    print(row)
+
+@O.k
+def ok1(): ok0(DATA1)
+
+@O.k
+def ok2(): ok0(DATA2)
