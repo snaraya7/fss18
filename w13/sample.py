@@ -8,6 +8,11 @@
 # -- called `some`.
 # --
 
+
+class sample:
+
+
+
 def sample(max,txt) :
   return
 #   {max=max or Lean.sample.max,
