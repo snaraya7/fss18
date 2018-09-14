@@ -12,66 +12,80 @@
 # -- Inside a `sym`:
 
 import math
-from w13 import O
+from w13.TestEngine import O
 
 class sym:
-  def __init__(self):
-    self.counts = []
-    self.mode = None
-    self.most = 0
-    self.n = 0
-    self._ent = None
 
-# -- Buld add to a `sym`:
+    def __init__(self):
+        self.counts = {}
+        self.mode = None
+        self.most = 0
+        self.n = 0
+        self._ent = None
 
-def syms(t,f,s):
+# -- Build add to a `sym`:
 
-  # if f == None:
-  #   f = function(x)
-  #
-  # f=f or function(x) return x end
 
-  s=sym()
-  for _,x in enumerate(t):
-    symInc(s, f(x))
-  return s
+    def syms(self,items, f):
+
+        if f is None:
+            f = lambda x : x
+
+        s=sym()
+
+        for item in items:
+            self.symInc(f(item))
+        return s
+
+
 
 # -- Add `x` to a `sym`:
 
-def symInc(t,x,   new,old):
-  if x=="?":
-    return x
+    def symInc(self,x):
+        if x == "?":
+            return x
 
-  t._ent= None
-  t.n = t.n + 1
-  old = t.counts[x]
-  new = old and old + 1 or 1
-  t.counts[x] = new
-  if new > t.most:
-    t.most = new
-    t.mode = x
-  return x
+        self._ent= None
+        self.n = self.n + 1
+
+        old = self.counts.get(x, 0)
+        new = old and old + 1 or 1
+
+        self.counts[x] = new
+
+        if new > self.most:
+            self.most = new
+            self.mode = x
+
+        return x
 
 # -- Remove `x` from a `sym`.
 
-def symDec(t,x):
-  t._ent= None
-  if t.n > 0:
-    t.n = t.n - 1
-    t.counts[x] = t.counts[x] - 1
-  return x
+    def symDec(t,x):
+        t._ent= None
+        if t.n > 0:
+            t.n = t.n - 1
+            t.counts[x] = t.counts[x] - 1
+        return x
 
 # -- Computing the entropy: don't recompute if you've
 # -- already done it before.
 
-def symEnt(t,  p):
-  if t._ent == False:
-    t._ent=0
-    for x,n in enumerate(t.counts): #do
-      p      = n/t.n
-      t._ent = t._ent - p * math.log(p,2) #end end
-  return t._ent
+    def symEnt(self):
+        if self._ent == None:
+            self._ent=0
+
+        for key, value in self.counts.items():
+            p      = value/self.n
+            self._ent = self._ent - p * math.log(p,2)
+        return self._ent
 
 @O.k
 def test():
-  assert symEnt(sym().syms(["t","f"])) == 0.5
+    s = sym()
+    syms = ['y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y',
+            'n', 'n', 'n', 'n', 'n']
+    s.syms(syms, None)
+    result = s.symEnt()
+    print(result)
+    assert result == 0.9402859586706309
