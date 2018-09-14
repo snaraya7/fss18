@@ -13,7 +13,7 @@ from w13.TestEngine import O
 
 class sample:
 
-    def __init__(self, max = 1000, txt = ""):
+    def __init__(self, max = 100000, txt = ""):
             self.max = max
             self.rank = 1
             self.txt = txt
@@ -30,7 +30,7 @@ class sample:
             self.some.append(x)
         elif random.random() < now/self.n:
             self.sorted = False
-            self.some[ math.floor(0.5+ random.random()* now) ] = x
+            self.some[ math.floor(0.5 + random.random() * now) ] = x
         return x
 
 # -- Never resort if we are already sorted.
@@ -70,13 +70,14 @@ class sample:
 @O.k
 def test():
     random.seed(1)
+    print(random.random())
     samp = sample()
     s = {}
 
     for i in range (5,10):
         s[i] = math.pow(2,i)
 
-    for i in range (1,10):
+    for i in range (1,10000 ):
         y = random.random()
         for key, value in s.items():
             samp.sampleInc(y)
