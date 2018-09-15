@@ -22,6 +22,7 @@ class num:
 
     def __init__(self,max):
         self.n = 0
+        self.max = max
         self.mu = 0
         self.m2 = 0
         self.sd = 0
@@ -38,12 +39,12 @@ class num:
 
 # -- Bulk add to a `num`:
 
-    def  nums(self,f):
+    def  nums(self, input, f=None):
         if f is None:
             f = lambda x: x
-        n=num()
-        for item in self._some:
-            self._some.numInc(n, f(item))
+        n=num(self.max)
+        for item in input:
+            self.numInc(f(item))
 
         return n
 # end
@@ -52,12 +53,14 @@ class num:
 # -- This is [Welford's algorithm](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm)
 
     def  numInc(self,x):
-        if x == "?":
+        if x == '?':
             return x
 
         self.n  = self.n + 1
 
-        self.sampleInc(self._some, x)
+        sample.sampleInc(self._some, x)
+        # self.sampleInc(self._some, x)
+
         d    = x - self.mu
         self.mu = self.mu + d/self.n
         self.m2 = self.m2 + d*(x - self.mu)
@@ -68,6 +71,7 @@ class num:
             self.lo = x #end
         if (self.n>=2):
             self.sd = math.pow((self.m2/(self.n - 1 + math.pow(10,-32))),0.5) #end
+
         return x
 # end
 #
@@ -120,12 +124,18 @@ class num:
 @O.k
 def test():
 
-    n = num([4, 10, 15, 38, 54, 57, 62, 83, 100, 100, 174, 190, 215, 225,
+    n = num(1000)
+    n.nums([4, 10, 15, 38, 54, 57, 62, 83, 100, 100, 174, 190, 215, 225,
      233, 250, 260, 270, 299, 300, 306, 333, 350, 375, 443, 475,
      525, 583, 780, 1000])
-    assert (abs(n.mu), abs(270.3))
-    assert (abs(n.sd), abs(231.946))
-    print(n.mu, n.sd)
+
+    intmu = int ( n.mu )
+    intsd = int ( n.sd )
+
+    print(intmu,intsd)
+    assert (intmu == 270)
+    assert (intsd == 231)
+
 
 
 
