@@ -30,7 +30,8 @@ class sample:
             self.some.append(x)
         elif random.random() < now/self.n:
             self.sorted = False
-            self.some[ math.floor(0.5 + random.random() * now) ] = x
+            index = min( now-1, math.floor(0.5 + random.random() * now) )
+            self.some[ index ] = x
         return x
 
 # -- Never resort if we are already sorted.
@@ -70,19 +71,18 @@ class sample:
 @O.k
 def test():
     random.seed(1)
-    print(random.random())
-    samp = sample()
+
     s = {}
 
-    for i in range (5,10):
-        s[i] = math.pow(2,i)
+    for i in range (4,11):
+        s[i] = sample(math.pow(2,i) + 1)
 
     for i in range (1,10000 ):
         y = random.random()
         for key, value in s.items():
-            samp.sampleInc(y)
+            value.sampleInc(y)
 
     for key, value in s.items():
-        print ( samp.nth(0.5) - 0.5 )
-        assert abs(samp.nth(0.5) - 0.5) < 0.2
+        print("max = ",math.pow(2, key), " - percentile > ", value.nth(0.5))
+        assert abs(value.nth(0.5) - 0.5) < 0.33
 

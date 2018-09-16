@@ -83,9 +83,11 @@ class sym:
 @O.k
 def test():
     s = sym()
+
     syms = ['y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y',
             'n', 'n', 'n', 'n', 'n']
     s.syms(syms, None)
     result = s.symEnt()
-    print(result)
+    print("input ", syms)
+    print("entropy ", result)
     assert result == 0.9402859586706309

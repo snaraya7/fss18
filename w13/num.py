@@ -125,16 +125,18 @@ class num:
 def test():
 
     n = num(1000)
-    n.nums([4, 10, 15, 38, 54, 57, 62, 83, 100, 100, 174, 190, 215, 225,
+    input = [4, 10, 15, 38, 54, 57, 62, 83, 100, 100, 174, 190, 215, 225,
      233, 250, 260, 270, 299, 300, 306, 333, 350, 375, 443, 475,
-     525, 583, 780, 1000])
+     525, 583, 780, 1000]
+    n.nums(input)
+
+    print("input = ",input)
+    print(n.mu, n.sd )
 
     intmu = int ( n.mu )
     intsd = int ( n.sd )
 
-    print(intmu,intsd)
-    assert (intmu == 270)
-    assert (intsd == 231)
+    assert (intmu == 270 and intsd == 231)
 
 
 
