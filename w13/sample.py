@@ -44,7 +44,7 @@ class sample:
         return self.some
 
 # -- But once they are sorted, we can access the `nth`
-# -- percentile item.
+# -- percentile item. #
 
     def nths(self, ns):
 
