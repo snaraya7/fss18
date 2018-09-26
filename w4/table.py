@@ -1,87 +1,151 @@
-from w13 import num
-from w13 import sym
-from w13 import sample
-import re
+from w13.num import num
+from w13.sym import sym
+from w13.sample import sample
+from texttable import Texttable
+import re,csv
 
 class table:
-    def __init__(self, max = 1000):
-        w={}
-        syms = sym()
-        nums = num(max),
-        clazz = None,
-        rows = {}
-        name = {}
-        _use = {}
-        indeps = {}
 
 
-def indep(self,c):
-    return not self.w[c] and self.clazz != c
+    def __init__(self):
+        """
+        A table object to represent rows that holds and works with
+        both num and sym instance
+        """
+        self.use = {}
+        self.w={}
+        self.syms = {}
+        self.nums = {}
+        self.clazz = None
+        self.rows = {}
+        self.name = {}
+        self. indeps = {}
 
-def dep(self,c):
-    return not indep(c)
 
-def header(self, cells):
-  t = self or table()
-  t.indeps = {}
+    def row(self,cells):
+          """
+         Adds a row to this table instance
+          :param cells:
+          :return:
+          """
+          r= len(self.rows) + 1
+          self.rows[r] = {}
+          for c,c0 in self.use.items():
+            x = cells[c0]
+            if x != '?':
+              if c0 in self.nums.keys():
+                x = float(x)
+                self.nums[c].numInc(x)
+              else:
+                self.syms[c].symInc(x)
+            self.rows[r][c] = x
+
+    def dep(self, c):
+        """
+        Check if this column is a dependent column
+        :param c:
+        :return: True/False
+        """
+        return not self.indep(c)
+
+    def indep(self,c):
+        """
+        Check if this column is an independent column
+        :param c:
+        :return: True/False
+        """
+        return not self.w[c] and self.clazz != c
+
+    def printReport(self, fileName):
+        """
+        Pretty print the table instance for a given csv input
+        :param fileName:
+        :return:
+        """
+
+        t = Texttable()
+        t.add_rows([[' ', ' ', 'n' , 'mode' ,'frequency']])
+        print("-------------- ",str(fileName)," ---------------------------\n")
+        for key, symVal in self.syms.items():
+            t.add_row([str(key), self.name[key], symVal.n, symVal.mode, symVal.most])
+
+        print (t.draw())
+
+
+        t = Texttable()
+        t.add_rows([[' ', ' ', 'n', 'mu', 'sd']])
+
+        for key, numVal in self.nums.items():
+            t.add_row([str(key), self.name[key], numVal.n, numVal.mu, numVal.sd])
+
+        print(t.draw())
+
+
+def header(cells):
+  """
+   To read and process special symbols for input rows
+  :param cells:
+  :return:
+  """
+
+  t = table()
   for c0,x in enumerate(cells):
-    if "?" not in x: #match("%?"):
-      c = len(t._use)+1
-      t._use[c] = c0
+    if "?" not in x:
+      c = len(t.use)
+      t.use[c] = c0
       t.name[c] = x
-      if re.search("[<>$]", x): #x:match("[<>%$]")
-	    t.nums[c] = num(1)
+      if re.search("[<>$]", x):
+        t.nums[c] = num(1000)
       else :
           t.syms[c] = sym()
-      if     "<" in x : #x:match("<") then
+      if     "<" in x :
          t.w[c]  = -1
-      elif ">" in x: #:match(">") then
+      elif ">" in x:
         t.w[c]  =  1
-      elif "!" in x: #:match("!") then
+      elif "!" in x:
         t.clazz =  c
       else:
           t.indeps[ len(t.indeps) + 1 ] = c
-          # end end end
+
   return t
 
 
-def row(self,cells):
-  r=  len(self.rows)+1
-  self.rows[r] = {}
-  for c,c0 in enumerate(self._use):
-    x = cells[c0]
-    if x != "?": #then
-      if self.nums[c]: #then
-	x = float(x)#tonumber(x)
-        self.nums.numInc(self.nums[c], x)
-      else:
-	self.sym.symInc(self.syms[c], x)
-    self.rows[r][c] = x
-    # end
-  return self
-# end
+def createTable(fileName):
+    """
+    Reads csv from disk using fileName
+    :param fileName: csv relative file path
+    :return: a table object with only header or all data rows.
+    """
+
+    newTable = table()
+    lineNumber = 1
+    with open(fileName) as csv_file:
+        csvRows = ''
+        readerElements = csv.reader(csv_file, delimiter=',')
+        for row in readerElements:
+            cells = row #row.split(",")
+            if lineNumber > 1:
+                 newTable.row(cells)
+            else :
+                lineNumber += 1
+                newTable = header(cells)
 
 
-# def rows1(stream, t,f0,f,   first,line,cells):
-#   first,line = true,io.read()
-#   while line do
-#     line= line:gsub("[\t\r ]*","")
-#               :gsub("#.*","")
-#     cells = split(line)
-#     line = io.read()
-#     if #cells > 0 then
-#       if first then f0(cells,t) else f(t,cells) end end
-#       first = false
-#   end
-#   io.close(stream)
-#   return t
-# end
-#
-# function rows(file,t,f0,f,      stream,txt,cells,r,line)
-#   return rows1( file and io.input(file) or io.input(),
-#                 t  or data(), f0 or header, f or row) end
+    return newTable
 
 
 
 
+if __name__ == "__main__":
 
+    """
+    Prints the statistics for each csv
+    """
+    autoTable = createTable("data/auto.csv")
+    autoTable.printReport("auto.csv")
+
+    weatherTable = createTable("data/weather.csv")
+    weatherTable.printReport("weather.csv")
+
+    weatherLongTable = createTable("data/weatherLong.csv")
+    weatherLongTable.printReport("weatherLong.csv")

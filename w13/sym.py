@@ -25,6 +25,8 @@ class sym:
 
 # -- Build add to a `sym`:
 
+    def toString(self):
+        return "\t"+str(self.n) +"\t"+str(self.mode)+"\t"+str(self.most)
 
     def syms(self,items, f):
 

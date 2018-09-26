@@ -31,6 +31,9 @@ class num:
         self._some = sample(max)
         self.w = 1
 
+    def toString(self):
+        return "\t"+str(self.n) +"\t"+str(self.mu)+"\t"+str(self.sd)
+
 #     def  num(max):
 #   return {n=0, mu=0, m2=0, sd=0,
 #           lo=10^32, hi=-10^32, _some=sample(max),
