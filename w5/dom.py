@@ -1,4 +1,4 @@
-#Porting... WIP
+
 import math
 import operator
 import random as rand
@@ -8,10 +8,14 @@ from w4 import table
 from w5 import Configuration
 
 
-
-
-
 def dom(table,row1,row2):
+
+  """
+    Normalizes row1 and row2 across the table object to determine domination
+    :param table: instance of the table object holding all rows csv data
+    :param row1
+    :param row2
+    :return:  True/False """
 
   s1, s2 ,n = 0,0, len(table.w)
 
@@ -26,6 +30,12 @@ def dom(table,row1,row2):
 
 
 def anotherRow(table, row1):
+    """
+     Logic to pick a random row from the table object other than row1
+    :param table
+    :param row1
+    :return: The random row from the table instance
+    """
 
     row2 = row1
     while row1 == row2 :
@@ -35,6 +45,11 @@ def anotherRow(table, row1):
 
 
 def dump(table):
+    """
+    Pretty print the resulting table with dom column
+    :param table
+    :return nothing
+    """
 
     t = Texttable()
 
@@ -43,8 +58,6 @@ def dump(table):
             colNames.append(colName)
 
     t.add_row(colNames)
-
-
 
     for a, b in table.rows.items():
         row = []
@@ -61,6 +74,12 @@ def dump(table):
 
 
 def doms(table):
+  """
+    Assigns dom score to the passed table object
+    :param table:
+    :return: nothing
+    """
+
   n = Configuration.samples
   c = len(table.name)
   table.name[c] = "dom"
@@ -80,6 +99,13 @@ def doms(table):
 
 
 def dumpList(table, rows, max):
+    """
+    Pretty prints the max number of rows, table instance is used to extract column header.
+    :param table
+    :param rows
+    :param max
+    :return: nothing
+    """
     t = Texttable()
 
     colNames = []
@@ -104,6 +130,10 @@ def dumpList(table, rows, max):
 
 
 if __name__ == '__main__':
+
+    """
+    Reports expected output for w5 tasks (2)
+    """
 
     print("Test 1 auto.csv ")
     t1 = table.createTable("data/auto.csv")
