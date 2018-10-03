@@ -20,7 +20,7 @@ import math, random
 
 class num:
 
-    def __init__(self,max):
+    def __init__(self, max=1000):
         self.n = 0
         self.max = max
         self.mu = 0
@@ -107,7 +107,15 @@ class num:
         self.m2 = self.m2 - d*(x- self.mu)
 
         if (self.n>=2):
-            self.sd = (self.m2/(self.n - 1 + 10^-32))^0.5
+            # x= math.pow(10, -32)
+            # y = math.pow(x, 0.5)
+
+            try:
+                self.sd = math.pow( self.m2/((self.n - 1 + math.pow(10, -32))), 0.5)
+            except ValueError:
+                print("values = ",self.m2, self.n - 1)
+                self.sd = 0
+
         return x
 # end
 
