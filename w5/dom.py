@@ -95,6 +95,7 @@ def doms(table):
      s = dom(table,row1,row2) and 1/n or 0
      row1[c] = row1[c] + s
 
+  return table
   # dump(table)
 
 
