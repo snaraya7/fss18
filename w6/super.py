@@ -108,15 +108,12 @@ def super(data,goal,enough):
     return 0
 
 
-  i = -1
   for c  in data.indeps:
-        i = i + 1
         if c in data.nums :
-            rows.sort(key=operator.itemgetter(c))
+            rows.sort(key=operator.itemgetter(0), reverse=True)
             most = stop(c,rows)
             print("\n-- .. "+str(data.name[c])+" ..  ----------")
             cuts(c,1,most,"|.. ")
-  # print(gsub( cat(data.name,", "),               "%$","")) #-- dump dollars since no more nums
   dump(rows)
 
 def dump(rows):
@@ -129,9 +126,9 @@ def dump(rows):
     t = Texttable()
 
     # colNames = []
-    # for key, colName in table.name.items():
+    # for   colName in [ '%outlook', '$temp' ,     '<humid'   ,    ' wind'    ,   '!play '  ,     '>dom']:
     #         colNames.append(colName)
-    #
+
     # t.add_row(colNames)
 
     for r in rows:
@@ -158,5 +155,5 @@ if __name__ == '__main__':
   s = super(doms(t), None, None)
 
   print("Test 2 auto.csv ")
-  t = table.createTable("data/weatherLong.csv")
+  t = table.createTable("data/auto.csv")
   s = super(doms(t), None, None)
