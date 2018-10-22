@@ -20,17 +20,19 @@ def super(data,goal,enough):
  """
 
   rows   = []
-
+  intermediateMap = {}
 
   for key, value in data.rows.items():
       rows.append(value)
 
-  goal   = goal or len(rows[1])
-  enough = enough or (len (rows))**Configuration.super_enough
-  most = 0
+  # print(rows)
+  goal   = len(rows[0])-1
+  # print("goal", goal)
+  enough = (len (rows))**Configuration.super_enough
+  # most = 0
 
   def band(c,lo,hi):
-        if lo==1 :
+        if lo==0 :
             return ".."+ str( rows[hi][c])
         elif hi == most:
             return str(rows[lo][c])+".."
@@ -49,25 +51,34 @@ def super(data,goal,enough):
     cut = None
     xl,xr = num(), num()
     yl,yr = num(), num()
-    for i in range (lo,hi) :
+    for i in range (lo,hi+1) :
       xr.numInc( rows[i][c])
       yr.numInc( rows[i][goal])
+
+
     bestx = xr.sd
     besty = yr.sd
+    n = yr.n
     mu    = yr.mu
+
+
     if (hi - lo > 2*enough) :
-      for i in range (lo,hi):
+      for i in range (lo,hi+1):
         x = rows[i][c]
         y = rows[i][goal]
-        xl.numInc(x); xr.numDec(x)
-        yl.numInc(y); yr.numDec(y)
+        xl.numInc(x)
+        xr.numDec(x)
+        yl.numInc(y)
+        yr.numDec(y)
         if xl.n >= enough and xr.n >= enough :
           tmpx = xl.numXpect(xr) * Configuration.super_margin
           tmpy = yl.numXpect(yr) * Configuration.super_margin
           if tmpx < bestx :
             if tmpy < besty :
               cut,bestx,besty = i, tmpx, tmpy
-    return cut,mu
+
+    intermediateMap[c] = yr.sd**2/n
+    return cut,mu,n,besty
 
   def cuts(c, lo, hi, pre):
 
@@ -79,9 +90,10 @@ def super(data,goal,enough):
             :param pre:
             :return:
         """
-        s = None
+        # s = None
         txt = str(pre)+".."+str(rows[lo][c])+".."+str(rows[hi][c])
-        cut, mu = argmin(c, lo, hi)
+        cut, mu, n, sd = argmin(c, lo, hi)
+
         if cut:
             print(txt)
             cuts(c, lo, cut, pre+str("..|.. "))
@@ -90,9 +102,8 @@ def super(data,goal,enough):
         else:
             s = band(c, lo, hi)
             print(txt+str(".. ==> ..")+str(math.floor(100 * mu)))
-
-        for r in range (lo, hi) :
-            rows[r][c] = s
+            for r in range (lo, hi+1) :
+                rows[r][c] = s
 
   def stop(c,t):
 
@@ -102,19 +113,37 @@ def super(data,goal,enough):
             :param t:
             :return:
     """
+    # print("len t",len(t))
+    # print("c",c)
+
     for i in range (len(t) -1,-1 -1) :
-        if t[i][c] != "?":
+        print("print ",t[i][c])
+        if t[i][c] != '?':
             return i
     return 0
 
 
   for c  in data.indeps:
         if c in data.nums :
-            rows.sort(key=operator.itemgetter(0), reverse=True)
+            # rows.sort(key=operator.itemgetter(0), reverse=True)
+            # print("calling stop")
             most = stop(c,rows)
-            print("\n-- .. "+str(data.name[c])+" ..  ----------")
-            cuts(c,1,most,"|.. ")
+            print("\n-- .. "+str(data.name[c])+" : " +str(most)+" ..  ----------")
+            # print("most",most)
+            cuts(c,0,most,"|.. ")
+
   dump(rows)
+
+  """
+   Finding the Splitter
+  """
+  minVar = math.inf
+  for k,v in intermediateMap.items():
+      minVar = min(v, minVar)
+
+  print("split at : ",rows[int(minVar)][0])
+
+
 
 def dump(rows):
     """
