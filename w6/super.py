@@ -78,7 +78,7 @@ def super(data,goal,enough):
               cut,bestx,besty = i, tmpx, tmpy
 
     intermediateMap[c] = yr.sd**2/n
-    return cut,mu,n,besty
+    return cut,mu
 
   def cuts(c, lo, hi, pre):
 
@@ -92,7 +92,7 @@ def super(data,goal,enough):
         """
         # s = None
         txt = str(pre)+".."+str(rows[lo][c])+".."+str(rows[hi][c])
-        cut, mu, n, sd = argmin(c, lo, hi)
+        cut, mu = argmin(c, lo, hi)
 
         if cut:
             print(txt)
